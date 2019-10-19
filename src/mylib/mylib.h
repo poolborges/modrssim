@@ -132,7 +132,7 @@ class DRegKey : public CObject
       LONG SetValue(LPCTSTR valueName , DWORD dwValue);
       LONG SetValue(LPCTSTR valueName , LPCTSTR szValue, DWORD length);
       LONG SetValue(LPCTSTR valueName , const BYTE* binData, DWORD length);
-      LONG SetValue(LPCTSTR valueName , CString& stringCString) {const char *pS = stringCString;LONG ret=SetValue(valueName,(const char*)pS, stringCString.GetLength());return(ret);};
+      LONG SetValue(LPCTSTR valueName , CString& stringCString) {LONG ret=SetValue(valueName, stringCString, stringCString.GetLength());return(ret);};
       // Reg. management functions
       LONG DeleteValue(LPCTSTR valueName);
       LONG DeleteKey(LPCTSTR keyName = NULL);

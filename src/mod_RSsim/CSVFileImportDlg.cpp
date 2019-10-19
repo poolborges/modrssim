@@ -60,7 +60,7 @@ void CCSVFileImportDlg::DoDataExchange(CDataExchange* pDX)
    GetLocalTime(&sysTime);
    CString yFolder;
    int pos;
-      yFolder.Format("%04d%02d%02d", sysTime.wYear, sysTime.wMonth, sysTime.wDay);
+      yFolder.Format(_T("%04d%02d%02d"), sysTime.wYear, sysTime.wMonth, sysTime.wDay);
       pos = m_importFolder.Find(yFolder);
       if (pos>1)
       {
@@ -137,7 +137,7 @@ static char BASED_CODE szFilter[] = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*
 CString initialDir, fullFileName;
 
    UpdateData(TRUE);
-	CFileDialog dlg(TRUE, "csv", 0, OFN_HIDEREADONLY|OFN_FILEMUSTEXIST ,szFilter, this);
+	CFileDialog dlg((BOOL)TRUE, (LPCTSTR)"csv", 0, OFN_HIDEREADONLY|OFN_FILEMUSTEXIST ,(LPCTSTR)szFilter, this, (BOOL)TRUE);
 
    initialDir = m_importFolder;
    dlg.m_ofn.lpstrInitialDir = initialDir.GetBuffer(0);

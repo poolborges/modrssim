@@ -85,26 +85,26 @@ WORD sum1=0;
 CString appendSumText, totalSumText;
 
    // build CRC of the USER NAME
-   input = userName.GetBuffer(userName.GetLength()+1);
+   input = (CHAR *)userName.GetBuffer(userName.GetLength()+1);
    CalcCRC((BYTE*)input, strlen(input), &sum1);
    userName.ReleaseBuffer();
-   appendSumText.Format("%02X%02X", HIBYTE(sum1), LOBYTE(sum1));
+   appendSumText.Format(_T("%02X%02X"), HIBYTE(sum1), LOBYTE(sum1));
    userName +=appendSumText;
    totalSumText = appendSumText;
 
    // build CRC of the USER NAME+ previous CRC, to generate a stronger CRC
-   input = userName.GetBuffer(userName.GetLength()+1);
+   input = (CHAR *)userName.GetBuffer(userName.GetLength()+1);
    CalcCRC((BYTE*)input, strlen(input), &sum1);
    userName.ReleaseBuffer();
-   appendSumText.Format("%02X%02X", HIBYTE(sum1), LOBYTE(sum1));
+   appendSumText.Format(_T("%02X%02X"), HIBYTE(sum1), LOBYTE(sum1));
    
 	// both CRC's together form the new CRC, check for a match
 	totalSumText += appendSumText;
-	ret = (strcmp(key, totalSumText) == 0);
+	ret = (wcscmp(key, totalSumText) == 0);
 	if (( !suppressUI ) && ( !ret ))
 		{
 			// "Unregistered version!"
-			ShowRegistrationMessage();
+			//POOLBORGES ShowRegistrationMessage();
 		}
 	return(ret);
 }
@@ -123,6 +123,7 @@ BOOL CRegistrationTest::CheckRegistrationKey(LPCTSTR name, LPCTSTR key)
 // the nag is so that you contact me, and I can trace actual prorgam useage
 void CRegistrationTest::RegistrationReminder()
 {
+	m_registeredOK = TRUE; //POOLBORGES
    if (!m_registeredOK)
    {
    BOOL expired = FALSE;
@@ -149,9 +150,9 @@ void CRegistrationTest::RegistrationReminder()
 // ------------------------------------ ShowRegistrationMessage --------------------------
 void CRegistrationTest::ShowRegistrationMessage()
 {
-   AfxMessageBox("This is a fully functional version of MOD-SIM but without a key; \
+   AfxMessageBox(_T("This is a fully functional version of MOD-SIM but without a key; \
 \nit will show this message after 45 minutes, and then just try to annoy U after that.\
-\n\nTo obtain a totally free key, see the Help-About window!", MB_ICONINFORMATION );
+\n\nTo obtain a totally free key, see the Help-About window!"), MB_ICONINFORMATION );
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -163,7 +164,7 @@ CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CAboutDlg)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
-   m_topic.SetHelpTopic("More");
+   m_topic.SetHelpTopic(_T("More"));
 }
 
 
@@ -210,10 +211,10 @@ CString title;
 	// the Email to link is set up here
    m_emaillink1.SubclassDlgItem(IDC_EMAILLINK, this);
    m_emaillink1.SetHoverCursorHandle(AfxGetApp()->LoadCursor(IDC_MYHANDCURSOR));
-   m_emaillink1.SetWindowText(lpAuthor_email);
+   m_emaillink1.SetWindowText((LPCTSTR)lpAuthor_email);
 
    // set the URL that we will actually go to here
-   mailLink.Format("mailto:%s?subject=%s%s", lpAuthor_email, "mod_rssim", lpsMyAppVersion);  // append it
+   mailLink.Format(_T("mailto:%s?subject=%s%s"), lpAuthor_email, "mod_rssim", lpsMyAppVersion);  // append it
    m_emaillink1.m_link = mailLink;
 
    SetRegStatus();
@@ -237,7 +238,7 @@ CString title;
 
 	m_static.SubclassDlgItem(IDC_CREDITSTATIC, this);
    CString pArrCredit;
-   pArrCredit.Format(pArrCreditPre, lpsMyAppVersion);
+   pArrCredit.Format((LPCTSTR)pArrCreditPre, lpsMyAppVersion);
 	m_static.SetCredits(pArrCredit,'|');
 	m_static.SetSpeed(DISPLAY_MEDIUM);
 	m_static.SetColor(BACKGROUND_COLOR, GetSysColor(COLOR_3DFACE));//RGB(192,192,192));
@@ -257,9 +258,9 @@ void CAboutDlg::SetRegStatus()
 {
 CString reg;   //registration info
    if (m_registeredOK)
-      reg.Format("Registered user: %s   Key: %s", m_registeredUser, m_registeredKey);
+      reg.Format(_T("Registered user: %s   Key: %s"), m_registeredUser, m_registeredKey);
    else
-      reg.Format("Unregistered user");
+      reg.Format(_T("Unregistered user"));
    SetDlgItemText(IDC_REGISTRATIONINFO, reg);
 }
 

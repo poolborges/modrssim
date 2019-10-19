@@ -46,7 +46,7 @@ CAdvEmulationDlg::CAdvEmulationDlg(CWnd* pParent /*=NULL*/)
 	m_seperateRegisters = FALSE;
 	//}}AFX_DATA_INIT
    m_numDisabledControls = 0;
-   m_topic.SetHelpTopic("Animation");
+   m_topic.SetHelpTopic(_T("Animation"));
 }
 
 

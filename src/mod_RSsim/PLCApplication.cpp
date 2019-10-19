@@ -91,7 +91,7 @@ BOOL sendOK;
    if (numRegisters>234)
       return(FALSE);
 
-   info.Format("MASTER- Initiate %02X to %02X, READ file %d, registers %d to %d (trans=%04X)",
+   info.Format(_T("MASTER- Initiate %02X to %02X, READ file %d, registers %d to %d (trans=%04X)"),
                sourceStationID, destStationID,
                fileNum, startRegister, startRegister+ numRegisters, TNS);
    RSDataMessage(info);
@@ -163,7 +163,7 @@ BOOL sendOK;
    // initiate a WRITE message to the required PLC, pack in the data and TNS field specified
    // use SendPLCMessage() to fire it off, then we will just wait for and do nothing with the response in
    // OnMessageReceived() which fires once the PLC responds to us.
-   info.Format("MASTER- initiate %02X to %02X, SEND file %d, registers %d to %d (trans=%04X)",
+   info.Format(_T("MASTER- initiate %02X to %02X, SEND file %d, registers %d to %d (trans=%04X)"),
                sourceStationID, destStationID,
                fileNum, startRegister, startRegister+ numRegisters, TNS);
    RSDataMessage(info);
@@ -238,10 +238,10 @@ BYTE  commandCode;
       // we are done with it unless it is an error message frame
       if (msg.transmissionStatus)
       {
-         debugMess.Format("MASTER : Message %04X delivered with STS error:\n", msg.transactionID);
+         debugMess.Format(_T("MASTER : Message %04X delivered with STS error:\n"), msg.transactionID);
          return(FALSE); // re-send frame
       }
-      debugMess.Format("MASTER : Message %04X delivered OK:\n", msg.transactionID);
+      debugMess.Format(_T("MASTER : Message %04X delivered OK:\n"), msg.transactionID);
       RSDataMessage(debugMess);
       SetEngineState(ENG_STATE_MASTERIDLE);
       return(TRUE);
@@ -255,7 +255,7 @@ BYTE  commandCode;
       BuildResponse(pAppLayerMsg, length, appMessage, &lengthAppMsg);
 
       SendPLCMessage(appMessage, lengthAppMsg);
-      RSDataMessage("Await response ACK:");
+      RSDataMessage(_T("Await response ACK:"));
       SetEngineState(ENG_STATE_FINALACK); //and then wait for the ack
    
       return(TRUE);
@@ -276,14 +276,14 @@ WORD  ABErrorCode = 0;
 
    CABMessage msg(inBuffer, inLength, FALSE);
 
-   RSDataMessage("Building Response Frame:");
+   RSDataMessage(_T("Building Response Frame:"));
    // determine if the request was valid
    if (AB_COMMAND_DRIVER == msg.command)
    {
       switch (msg.functionCode)
       {
          case (AB_FUNC_WRITE3 | 0x40):   // MASTER mode
-            RSDataMessage("Write response received:");
+            RSDataMessage(_T("Write response received:"));
             msg.count =0; // there no data in the response frame
 
             break;
@@ -301,7 +301,7 @@ WORD  ABErrorCode = 0;
                for (int i=0; i < msg.count/2; i++)
                {
                //CMemWriteLock  lk(PLCMemory.GetMutex());
-                  diagnoseMsg.Format("Set File %d:%d = %d\n", msg.fileNum, msg.address + i, *(WORD*)dataPtr);
+                  diagnoseMsg.Format(_T("Set File %d:%d = %d\n"), msg.fileNum, msg.address + i, *(WORD*)dataPtr);
                   //RSDataMessage(diagnoseMsg);
                   PLCMemory[msg.fileNum].SetAt(msg.address + i, *(WORD*)dataPtr, PLCMemory.GetMutex());
                   dataPtr +=2;
@@ -316,7 +316,7 @@ WORD  ABErrorCode = 0;
                                                  ); // repaint only the needed rows
                }
 
-               RSDataMessage("Write processed OK:");
+               RSDataMessage(_T("Write processed OK:"));
                msg.count =0; // there no data in the response frame
             }
             break;
@@ -327,14 +327,14 @@ WORD  ABErrorCode = 0;
 
                msg.BuildMessagePreamble();
                dataPtr = &msg.buffer[8];
-               diagnoseMsg.Format("Get File %3d:%3d\n", msg.fileNum, msg.address);
+               diagnoseMsg.Format(_T("Get File %3d:%3d\n"), msg.fileNum, msg.address);
                //RSDataMessage(diagnoseMsg);
 
                for (int i=0; i < msg.count/2; i++)
                {
                CMemWriteLock  lk(PLCMemory.GetMutex());
                   
-                  diagnoseMsg.Format("%3d = x%04X |", msg.address + i, PLCMemory[msg.fileNum].GetAt(msg.address+i));
+                  diagnoseMsg.Format(_T("%3d = x%04X |"), msg.address + i, PLCMemory[msg.fileNum].GetAt(msg.address+i));
                   linePos+= diagnoseMsg.GetLength();
                   if (linePos > 79)
                   {
@@ -345,7 +345,7 @@ WORD  ABErrorCode = 0;
                   *(WORD*)dataPtr = PLCMemory[msg.fileNum].GetAt(msg.address+i);
                   dataPtr +=2;
                }
-               RSDataMessage("Read processed OK:");
+               RSDataMessage(_T("Read processed OK:"));
                ABError = FALSE;
             }
             break;

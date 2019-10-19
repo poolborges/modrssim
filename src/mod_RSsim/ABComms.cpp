@@ -81,9 +81,9 @@ CString portName;
 CString description;
 
    if (PROTOCOL_SELAB232 == pGlobalDialog->m_selectedProtocol)
-      SetProtocolName("Allen-Bradley DF1");
+      SetProtocolName(_T("Allen-Bradley DF1"));
    else
-      SetProtocolName("AB DF1 Master");
+      SetProtocolName(_T("AB DF1 Master"));
 
 
    m_ABmasterIDLETime = 100;
@@ -120,7 +120,7 @@ CString description;
           (pGlobalDialog->m_byteSize != 8)||
           (pGlobalDialog->m_rts != RTS_CONTROL_ENABLE)||
           (pGlobalDialog->m_stopBits != ONESTOPBIT))
-          if (IDYES == AfxMessageBox("Load DF1 port setting defaults Y/N?\n Settings: 19200,8,N,1 and RTS enabled", MB_YESNO))
+          if (IDYES == AfxMessageBox(_T("Load DF1 port setting defaults Y/N?\n Settings: 19200,8,N,1 and RTS enabled"), MB_YESNO))
       {
          pGlobalDialog->m_baud = 19200;
          pGlobalDialog->m_parity = NOPARITY;
@@ -140,7 +140,7 @@ CString description;
           (pGlobalDialog->m_byteSize != 8)||
           (pGlobalDialog->m_rts != RTS_CONTROL_ENABLE)||
           (pGlobalDialog->m_stopBits != ONESTOPBIT))
-          if (IDYES == AfxMessageBox("Load Allen-Bradley DF1 Master port setting defaults Y/N?\n Settings: 19200,8,E,1 and RTS enabled", MB_YESNO))
+          if (IDYES == AfxMessageBox(_T("Load Allen-Bradley DF1 Master port setting defaults Y/N?\n Settings: 19200,8,E,1 and RTS enabled"), MB_YESNO))
       {
          pGlobalDialog->m_baud = 19200;
          pGlobalDialog->m_parity = EVENPARITY;
@@ -152,10 +152,10 @@ CString description;
    }
 
    // 
-   portName.Format("%s %d:%d-%s-%s", portNameShort, pGlobalDialog->m_baud, pGlobalDialog->m_byteSize, parityNames[pGlobalDialog->m_parity], stopNames[pGlobalDialog->m_stopBits]);
+   portName.Format(_T("%s %d:%d-%s-%s"), portNameShort, pGlobalDialog->m_baud, pGlobalDialog->m_byteSize, parityNames[pGlobalDialog->m_parity], stopNames[pGlobalDialog->m_stopBits]);
 
-   portName += (IsMaster()?" -Master":" -Slave");
-   description.Format("Starting comms emulation : %s", portName);
+   portName += (IsMaster() ? _T(" -Master") : _T(" -Slave"));
+   description.Format(_T("Starting comms emulation : %s"), portName);
    RSDataMessage(description);
 
    // open the port etc...
@@ -505,7 +505,7 @@ BOOL and = FALSE;
 static CString description;
 #define AND    " and ";
 
-   description.Format ("x%X ", commError);
+   description.Format (_T("x%X "), commError);
    for (index = 0 ; index < 16; index++)
    {
       switch (commError & mask)
@@ -513,33 +513,33 @@ static CString description;
          case CE_BREAK    :    // The hardware detected a break condition.
             if (and)
                description += AND;
-            description += Scentence("The hardware detected a break condition", !and);
+            description += Scentence(_T("The hardware detected a break condition"), !and);
             and = TRUE;
             break;
          case CE_FRAME    :    // The hardware detected a framing error.
             if (and)
                description += AND;
-            description += Scentence("The hardware detected a framing error", !and);
+            description += Scentence(_T("The hardware detected a framing error"), !and);
             and = TRUE;
             break;
          case CE_IOE      :    // An I/O error occurred during communications with the device.
             if (and)
                description += AND;
-            description += Scentence("An I/O error occurred during communications with the device", !and);
+            description += Scentence(_T("An I/O error occurred during communications with the device"), !and);
             and = TRUE;
             break;
          case CE_MODE     :    // The requested mode is not supported, or the hCommDev parameter is
                                // invalid. If this bit set, this is the only valid error.
             if (and)
                description += AND;
-            description += Scentence("The requested mode is not supported", !and);
+            description += Scentence(_T("The requested mode is not supported"), !and);
             and = TRUE;
             break;
 
          case CE_OVERRUN  :    // A character-buffer overrun has occurred. The next character is lost.
             if (and)
                description += AND;
-            description += Scentence("A character-buffer overrun has occurred", !and);
+            description += Scentence(_T("A character-buffer overrun has occurred"), !and);
             and = TRUE;
             break;
          case CE_RXOVER   :    // An input buffer overflow has occurred. There is either no room in the input
@@ -547,19 +547,19 @@ static CString description;
                                //  was received.
             if (and)
                description += AND;
-            description += Scentence("An input buffer overflow has occurred", !and);
+            description += Scentence(_T("An input buffer overflow has occurred"), !and);
             and = TRUE;
             break;
          case CE_RXPARITY :    // The hardware detected a parity error.
             if (and)
                description += AND;
-            description += Scentence("The hardware detected a parity error", !and);
+            description += Scentence(_T("The hardware detected a parity error"), !and);
             and = TRUE;
             break;
          case CE_TXFULL   :    // The application tried to transmit a character, but the output buffer was full.
             if (and)
                description += AND;
-            description += Scentence("Transmision of a character failed, output buffer full", !and);
+            description += Scentence(_T("Transmision of a character failed, output buffer full"), !and);
             and = TRUE;
             break;
          default          :
@@ -578,7 +578,7 @@ void CABCommsProcessor::OnHWError(DWORD dwCommError)
    // restart interpreter
    if (0 == dwCommError)
    {
-      RSDataMessage("COMM IDLE: Restarting interpretation.");
+      RSDataMessage(_T("COMM IDLE: Restarting interpretation."));
    }
    else
    {
@@ -611,11 +611,11 @@ void CABCommsProcessor::RSDataMessage(LPCTSTR msg)
 {
 CString message;
    EnterCriticalSection(&stateCS);
-   message = "##";
+   message = _T("CABCommsProcessor-RSDataMessage##");
    message += msg;
    //OutputDebugString("##");
    OutputDebugString(message);
-   OutputDebugString("\n");
+   OutputDebugString(_T("\n"));
    if (NULL!=pGlobalDialog)
       pGlobalDialog->AddCommsDebugString(message);
    LeaveCriticalSection(&stateCS);
@@ -696,7 +696,7 @@ WORD minRESP_FrameLength = 12;
    { //append recieved bytes to the noise telegram
       if (m_noiseLength + numBytes >= sizeof(m_noiseBuffer))
       {
-         RSDataMessage("OVERFLOW:Restarting interpretation.");
+         RSDataMessage(_T("OVERFLOW:Restarting interpretation."));
 
          m_noiseLength = 0;
          SetEngineState(ENG_STATE_IDLE);
@@ -738,7 +738,7 @@ WORD minRESP_FrameLength = 12;
             if (( m_noiseBuffer[0] == ALLENBRADLEY_DLE)&&
                 (m_noiseBuffer[1] == ALLENBRADLEY_STX ))
             {
-               RSDataMessage("DLE-STX recieved");
+               RSDataMessage(_T("DLE-STX recieved"));
                SetEngineState(ENG_STATE_RECEIVE);
                if (m_noiseLength > 2)
                   return(OnProcessData((char*)m_noiseBuffer, 0, discardData));
@@ -769,7 +769,7 @@ WORD minRESP_FrameLength = 12;
                if (( m_noiseBuffer[0] == ALLENBRADLEY_DLE)&&
                    (m_noiseBuffer[1] == ALLENBRADLEY_ACK ))
                {
-                  RSDataMessage("GOT ACK: await remaining response.");
+                  RSDataMessage(_T("GOT ACK: await remaining response."));
                   // strip these 2 chars
                   m_noiseLength-= 2;
                   memmove(m_noiseBuffer, &m_noiseBuffer[2], m_noiseLength);
@@ -820,7 +820,7 @@ WORD minRESP_FrameLength = 12;
                   {
                   DWORD dataLength = nodleLen-2-4; // exclude the STX, ETX and CRC portions
                      // send an ACK, and process the message
-                     RSDataMessage("ACK device message.");
+                     RSDataMessage(_T("ACK device message."));
                      Send(2, txDLE_ACK, FALSE, NULL);
                      if (pGlobalDialog->m_useBCC)
                         dataLength++;
@@ -830,7 +830,7 @@ WORD minRESP_FrameLength = 12;
                   else
                   {
                   CString message;
-                     message.Format("Station %d is off-line, no response will be sent", msg.stationIDDest);
+                     message.Format(_T("Station %d is off-line, no response will be sent"), msg.stationIDDest);
                      RSDataMessage(message);
                      SetEngineState(ENG_STATE_IDLE);
                   }
@@ -849,7 +849,7 @@ WORD minRESP_FrameLength = 12;
                      FindFragment(nodleBuffer, nodleLen, txDLE_STX, 2, &stxPos);
                      if (stxPos < etxPos)
                      { // prevent parsing of an STX occuring after an ETX
-                        RSDataMessage("Cannot match STX-ETX framing, removing DLE-ETX.");
+                        RSDataMessage(_T("Cannot match STX-ETX framing, removing DLE-ETX."));
                         m_noiseLength-= etxPos+2;
                         // swallow all chars up to & including the DLE-ETX
                         memmove(m_noiseBuffer, &m_noiseBuffer[etxPos+2], m_noiseLength);
@@ -880,7 +880,7 @@ WORD minRESP_FrameLength = 12;
                         ActivateStationLED((BYTE)nodleBuffer[AB_DESTINATIONBYTEOFF]);
                   
                         // send an ACK, and process the message
-                        RSDataMessage("ACK device message.");
+                        RSDataMessage(_T("ACK device message."));
                         Send(2, txDLE_ACK, FALSE, NULL);
                         BOOL result = OnMessageReceived(&nodleBuffer[2], nodleLen-2-4); //(-2-4) exclude the STX, ETX and CRC portions
                         // will do it's own SetEngineState(ENG_STATE_FINALACK);
@@ -891,7 +891,7 @@ WORD minRESP_FrameLength = 12;
                      {  // kill this frame, I cannot match a CRC for it
                         if (FindFragment(m_noiseBuffer, m_noiseLength, txDLE_ETX, 2, &etxPos))
                         {
-                           RSDataMessage("Skipping frame, cannot match the CRC.");
+                           RSDataMessage(_T("Skipping frame, cannot match the CRC."));
                            m_noiseLength-= etxPos+4;
                            memmove(m_noiseBuffer, &m_noiseBuffer[etxPos+4], m_noiseLength);
                            SetEngineState(ENG_STATE_IDLE);
@@ -916,7 +916,7 @@ WORD minRESP_FrameLength = 12;
                memmove(m_noiseBuffer, &m_noiseBuffer[2], m_noiseLength);
                // determine next state
                SetEngineState(ENG_STATE_IDLE);   //return to idle state
-               RSDataMessage("SEND: completed OK:");
+               RSDataMessage(_T("SEND: completed OK:"));
                if (m_noiseLength)
                {
                   // process the leftover data/next request in our buffer
@@ -931,20 +931,20 @@ WORD minRESP_FrameLength = 12;
                m_messageNAKs++;
                if (m_messageNAKs >= AB_MAXIMUM_NAKS)
                {
-                  RSDataMessage("Too many NAKs, will abort:");
+                  RSDataMessage(_T("Too many NAKs, will abort:"));
                   Send(2, txDLE_ENQ, FALSE, NULL);
                   SetEngineState(ENG_STATE_IDLE);   // wait for ACK again
                   m_noiseLength = 0;
                   return TRUE;
                }
-               RSDataMessage("NAK, will re-send:");
+               RSDataMessage(_T("NAK, will re-send:"));
                SendPLCMessage(m_lastAppBuffer, m_lastAppLength);
                SetEngineState(ENG_STATE_FINALACK);   // wait for ACK again
                m_noiseLength = 0;
                return TRUE;
             }
             // strip the leading char from the noise buffer
-            RSDataMessage("Bad device final ACK response, restarting interpreter:");
+            RSDataMessage(_T("Bad device final ACK response, restarting interpreter:"));
             SetEngineState(ENG_STATE_IDLE);   //return to idle state
             m_noiseLength = 0;
             return(TRUE);
@@ -971,14 +971,14 @@ CFile dat;
 LONG area;
 DWORD wordIndex;
 
-   if (!dat.Open("ABDATA.DAT", CFile::modeRead|CFile::shareDenyRead, &ex) )
+   if (!dat.Open(_T("ABDATA.DAT"), CFile::modeRead|CFile::shareDenyRead, &ex) )
    {
       // complain if an error happened
       // no need to delete the exception object
 
       TCHAR szError[1024];
       ex.GetErrorMessage(szError, 1024);
-      OutputDebugString( "Couldn't open source file: ");
+      OutputDebugString(_T("Couldn't open source file: "));
       OutputDebugString( szError);
       
       return FALSE;
@@ -1037,14 +1037,14 @@ LONG area;
 DWORD wordIndex;
 
 
-   if (!dat.Open("ABDATA.DAT", CFile::modeWrite | CFile::shareExclusive | CFile::modeCreate, &ex) )
+   if (!dat.Open(_T("ABDATA.DAT"), CFile::modeWrite | CFile::shareExclusive | CFile::modeCreate, &ex) )
    {
       // complain if an error happened
       // no need to delete the ex object
 
       TCHAR szError[1024];
       ex.GetErrorMessage(szError, 1024);
-      OutputDebugString( "Couldn't open source file: ");
+      OutputDebugString(_T("Couldn't open source file: "));
       OutputDebugString( szError);
       
       return FALSE;

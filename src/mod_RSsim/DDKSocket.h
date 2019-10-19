@@ -36,7 +36,7 @@ typedef enum dataDebugAttrib
    dataDebugOther,
    dataDebugText,
 
-};
+}dataDebugAttrib_t;
 
 class CDDKSocket : public CObject
 {

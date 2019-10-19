@@ -39,7 +39,7 @@ public:
 	LPDISPATCH CreateObjectHelper(LPCOLESTR bstrProgID);
 	WCHAR*	ReadTextFileHelper(LPCOLESTR strFileName);
 	void	DestroyDataHelper(LPVOID lpvData);
-	HRESULT InvokeFuncHelper(LPCOLESTR lpszName, VARIANT* pvarParams, int nParams, VARIANT* pvarRet = NULL);
+	HRESULT InvokeFuncHelper(LPCOLESTR lpszName, VARIANT* pvarParams, UINT nParams, VARIANT* pvarRet = NULL);
 
    BOOL IsRunning() { return(m_xActiveScriptSite.m_running);};
 

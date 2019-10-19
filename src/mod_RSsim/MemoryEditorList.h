@@ -64,7 +64,7 @@ public:
 
    void SetAddressFormatHex(BOOL formatHEX = TRUE) {m_addressFormatHEX = formatHEX;};
    BOOL IsAddressFormatHex() {return m_addressFormatHEX;};
-   LPCTSTR GetAddressFormat() { return (m_addressFormatHEX?"%04X":"%ld");};
+   LPCTSTR GetAddressFormat() { return (m_addressFormatHEX ? _T("%04X") : _T("%ld"));};
 
 // custom draw
    afx_msg void OnCustomdrawMyList ( NMHDR* pNMHDR, LRESULT* pResult );

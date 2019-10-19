@@ -121,7 +121,7 @@ public:
    BOOL IsClone() { return (m_isClone);};
 
    void SetDisplayToggleButton() {
-      SetDlgItemText(IDB_TOGGLEDISP, (m_registerShow ?"Comms":"Registers"));};
+      SetDlgItemText(IDB_TOGGLEDISP, (m_registerShow ? _T("Comms") : _T("Registers")));};
 
    //////////////////////////////////////////////////////////
    // SCRIPTING object support functions
