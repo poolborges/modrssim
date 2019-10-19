@@ -1,0 +1,12 @@
+= Modbus simulator (FORK)
+
+NOTE: For my personal purpose, but in long future automatic binary release
+
+== About 
+
+Original source code from: https://sourceforge.net/p/modrssim
+
+
+== Reference
+
+* TODO...
