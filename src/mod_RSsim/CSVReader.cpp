@@ -102,7 +102,7 @@ double * varPtr = &m_values[0];
       return;
    last = pos+1;
    temp = Mid(0, pos);  //instrument#
-   sscanf(temp, "%d", &m_instrumentNum);
+   sscanf(temp.GetBuffer, "%d", &m_instrumentNum);
    fields++;
    *varPtr++ = m_instrumentNum;
 
@@ -115,9 +115,9 @@ double * varPtr = &m_values[0];
       if (-1!=next)
          temp = Mid(last, next);
 
-      sscanf(temp, "%lg", varPtr);
+      sscanf(temp.GetBuffer, "%lg", varPtr);
       OutputDebugString(temp);
-      OutputDebugString(" ");
+      OutputDebugString(_T(" "));
       last = last+next+1;
       fields++;
       varPtr++;
@@ -128,7 +128,7 @@ double * varPtr = &m_values[0];
       }
    }
    ASSERT(fields == MAX_CSVFILE_COLUMNS);
-   OutputDebugString("\n");
+   OutputDebugString(_T("\n"));
 } // Parse
 
 
@@ -267,7 +267,7 @@ LONG pos,curPos;
             {
                // put the line into the array
                CCSVTextLine *pString;
-                  pString = new CCSVTextLine(curLine);
+                  pString = new CCSVTextLine(curLine.GetBuffer);
                   //*pString = curLine;
                myArray->Add(pString);
             }
@@ -281,7 +281,7 @@ LONG pos,curPos;
    CHAR msg[MAX_DEBUG_STR_LEN];   
 
       sprintf(msg, "Error %d opening CSV file", e->m_cause);
-      OutputDebugString(msg);
+      OutputDebugString((LPCWSTR)msg);
    }
    END_CATCH
 
@@ -324,7 +324,7 @@ BOOL CCSVTextImporter::HandleTimer(LPCTSTR importFolder, CRegisterUpdaterIF *pPa
       sysTimeExpect = currentTime;
 
       sysTimeExpect.wMinute = (sysTimeExpect.wMinute/15)*15;
-      fileName.Format("%04d%02d%02d\\%02d%02d.csv", sysTimeExpect.wYear, 
+      fileName.Format(_T("%04d%02d%02d\\%02d%02d.csv"), sysTimeExpect.wYear, 
                                                     sysTimeExpect.wMonth, 
                                                     sysTimeExpect.wDay, 
                                                     sysTimeExpect.wHour, 
@@ -335,7 +335,7 @@ BOOL CCSVTextImporter::HandleTimer(LPCTSTR importFolder, CRegisterUpdaterIF *pPa
 
       // prevent re-processing the same file twice
       // todo: this may need to be cleverer, although it is not a real problem on start-up either.
-      if ((fileName != m_lastProcessed) &&(ExistFile(fullFileName)))
+      if ((fileName != m_lastProcessed) &&(ExistFile(fullFileName.GetBuffer)))
       {
       CWaitCursor wait;    // put up a wait cursor
 
@@ -357,7 +357,7 @@ BOOL CCSVTextImporter::HandleTimer(LPCTSTR importFolder, CRegisterUpdaterIF *pPa
       {
          m_lastInterval = sysTimeExpect;
          CString msg;
-         msg.Format("The expected CSV import file '%s' was not found!", fullFileName);
+         msg.Format(_T("The expected CSV import file '%s' was not found!"), fullFileName);
          m_parentInterface->DebugMessage(msg);
       }
    }
@@ -390,14 +390,14 @@ CString msg, msgFormat;
       // return if error occurs
       if (!LoadedOK())
       {
-         msg.Format("Processing CSV failed.");
+         msg.Format(_T("Processing CSV failed."));
          m_parentInterface->DebugMessage(msg);
          return(0);
       }
       // Viola, job done
    }
 
-   msg.Format("End processing OK");
+   msg.Format(_T("End processing OK"));
    m_parentInterface->DebugMessage(msg);
    return(1);
 }

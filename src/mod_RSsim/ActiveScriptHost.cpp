@@ -340,7 +340,7 @@ void CActiveScriptHost::DestroyDataHelper(LPVOID lpvData)
 ///////////////////////////////////////////////////////////////////////////
 // InvokeFuncHelper
 HRESULT CActiveScriptHost::InvokeFuncHelper(LPCOLESTR lpszName, VARIANT* pvarParams,
-											int nParams, VARIANT* pvarRet /*= NULL*/)
+											UINT nParams, VARIANT* pvarRet /*= NULL*/)
 {
 	HRESULT hr = E_FAIL;
 	if (m_pAxsScript != NULL && lpszName != NULL)
@@ -554,14 +554,14 @@ STDMETHODIMP CActiveScriptHost::XActiveScriptSite::OnScriptError(
 	desc = (LPCWSTR)ei.bstrDescription;
 	src = (LPCWSTR)ei.bstrSource;
 
-	strError.Format("%s\nSrc: %s\nLine:%d Error:%d Scode:%x", desc, src, ulLine, (int)ei.wCode, ei.scode);
-	strError1.Format("%s", desc);
-   strError2.Format("Src: %s\nLine:%d", src, ulLine);
-   strError3.Format("Error:%d Scode:%x", (int)ei.wCode, ei.scode);
+	strError.Format(_T("%s\nSrc: %s\nLine:%d Error:%d Scode:%x"), desc, src, ulLine, (int)ei.wCode, ei.scode);
+	strError1.Format(_T("%s"), desc);
+   strError2.Format(_T("Src: %s\nLine:%d"), src, ulLine);
+   strError3.Format(_T("Error:%d Scode:%x"), (int)ei.wCode, ei.scode);
    
    ASSERT(pGlobalDialog);
    pGlobalDialog->AddCommsDebugString(strErrorName);
-   strErrorName.Format("SCRIPT ERROR %s!!!!!!", pGlobalDialog->GetScriptFileName());
+   strErrorName.Format(_T("SCRIPT ERROR %s!!!!!!"), pGlobalDialog->GetScriptFileName());
    pGlobalDialog->AddCommsDebugString(strErrorName);
    pGlobalDialog->AddCommsDebugString(strError1);
    pGlobalDialog->AddCommsDebugString(strError2);

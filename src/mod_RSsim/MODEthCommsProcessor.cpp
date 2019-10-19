@@ -108,7 +108,7 @@ CMODEthCommsProcessor::~CMODEthCommsProcessor()
 void CMODEthCommsProcessor::SockDataMessage(LPCTSTR msg)
 {
    EnterCriticalSection(&stateCS);
-   OutputDebugString("##");
+   OutputDebugString("SockDataMessage##");
    if (NULL!=pGlobalDialog)
       pGlobalDialog->AddCommsDebugString(msg);
    LeaveCriticalSection(&stateCS);

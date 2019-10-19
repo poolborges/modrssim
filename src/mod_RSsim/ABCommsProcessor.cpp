@@ -93,13 +93,13 @@ byte hiNib,loNib;
    {
       //if (length)
       //   pGlobalDialog->CharactersSent();
-      debuggerString.Format("TX:%s\n", data);
+      debuggerString.Format(_T("TX:%s\n"), data);
    }
    else
    {
       //if (length)
       //   pGlobalDialog->CharactersReceived();
-         debuggerString.Format("RX:%s\n", data);
+         debuggerString.Format(_T("RX:%s\n"), data);
    }
    // Send to debugger list-box
    if (length)

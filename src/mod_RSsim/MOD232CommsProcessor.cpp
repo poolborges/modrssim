@@ -420,7 +420,7 @@ void CMOD232CommsProcessor::RSStateChanged(DWORD state)
 void CMOD232CommsProcessor::RSDataMessage(LPCTSTR msg)
 {
    EnterCriticalSection(&stateCS);
-   OutputDebugString("##");
+   OutputDebugString("CMOD232CommsProcessor-RSDataMessage##");
    if (NULL!=pGlobalDialog)
       pGlobalDialog->AddCommsDebugString(msg);
    LeaveCriticalSection(&stateCS);
