@@ -100,7 +100,7 @@ CString appendSumText, totalSumText;
    
 	// both CRC's together form the new CRC, check for a match
 	totalSumText += appendSumText;
-	ret = (wcscmp(key, totalSumText) == 0);
+	ret = (totalSumText.Compare(key) == 0);
 	if (( !suppressUI ) && ( !ret ))
 		{
 			// "Unregistered version!"

@@ -102,7 +102,7 @@ double * varPtr = &m_values[0];
       return;
    last = pos+1;
    temp = Mid(0, pos);  //instrument#
-   sscanf(temp.GetBuffer, "%d", &m_instrumentNum);
+   sscanf(temp.GetBuffer(), "%d", &m_instrumentNum);
    fields++;
    *varPtr++ = m_instrumentNum;
 
@@ -115,7 +115,7 @@ double * varPtr = &m_values[0];
       if (-1!=next)
          temp = Mid(last, next);
 
-      sscanf(temp.GetBuffer, "%lg", varPtr);
+      sscanf(temp.GetBuffer(), "%lg", varPtr);
       OutputDebugString(temp);
       OutputDebugString(_T(" "));
       last = last+next+1;
@@ -267,7 +267,7 @@ LONG pos,curPos;
             {
                // put the line into the array
                CCSVTextLine *pString;
-                  pString = new CCSVTextLine(curLine.GetBuffer);
+               pString = new CCSVTextLine(curLine.GetBuffer());
                   //*pString = curLine;
                myArray->Add(pString);
             }
@@ -281,7 +281,7 @@ LONG pos,curPos;
    CHAR msg[MAX_DEBUG_STR_LEN];   
 
       sprintf(msg, "Error %d opening CSV file", e->m_cause);
-      OutputDebugString((LPCWSTR)msg);
+      OutputDebugString((LPCSTR)msg);
    }
    END_CATCH
 
@@ -335,7 +335,7 @@ BOOL CCSVTextImporter::HandleTimer(LPCTSTR importFolder, CRegisterUpdaterIF *pPa
 
       // prevent re-processing the same file twice
       // todo: this may need to be cleverer, although it is not a real problem on start-up either.
-      if ((fileName != m_lastProcessed) &&(ExistFile(fullFileName.GetBuffer)))
+      if ((fileName != m_lastProcessed) &&(ExistFile(fullFileName.GetBuffer())))
       {
       CWaitCursor wait;    // put up a wait cursor
 
